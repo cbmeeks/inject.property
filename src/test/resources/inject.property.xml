@@ -1,0 +1,4 @@
+<propertyfiles>
+	<propertyfile>wsendpoints.properties</propertyfile>
+	<propertyfile>emails.properties</propertyfile>
+</propertyfiles>
