@@ -29,10 +29,10 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class PropertyProducer {
 
-	private static final String FILE_NOT_FOUND = "File %s not found in the classpath";
+	private static final String FILE_NOT_FOUND = "File %s not found";
 	private static final String CAN_NOT_READ = "Can not read file %s";
 	private static final String MUST_ANNOTATE = "The field %s must be of type String, annotated with @Property and the annotation must have a value";
-	private static final String LOADED_FILES = "%d properties files loaded";
+	private static final String LOADED_FILES = "%d properties files will be loaded";
 	private static final String LOADED_PROPERTIES = "%d properties ready to be injected";
 	private static final String INJECTION_FAILED = "Injection of attribute %s#%s failed, no value was found for the key %s in the properties files";
 	private static final Logger LOG = LoggerFactory
@@ -119,7 +119,7 @@ public class PropertyProducer {
 
 			} catch (IOException e) {
 				throw new RuntimeException(String.format(CAN_NOT_READ,
-						propertyFile));
+						propertyFile), e);
 			}
 		}
 

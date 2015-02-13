@@ -1,6 +1,7 @@
 package inject.property.config;
 
 import inject.property.annotations.Property;
+import inject.property.producer.PropertyProducer;
 
 import javax.inject.Inject;
 
@@ -18,14 +19,15 @@ import org.slf4j.LoggerFactory;
 @RunWith(Arquillian.class)
 public class ConfigFileReaderIT {
 
+	private static final String LOGGING_LEVEL_PROPERTY = "org.slf4j.simpleLogger.log.inject.property";
+	private static final String LOGGING_LEVEL_DEBUG = "debug";
 	private static final String BILLING_WS_ENDPOINT = "http://localhost:8080/billing";
 
 	private static final Logger LOG;
 
 	static {
 		// Set the logging level to DEBUG for package inject.property
-		System.setProperty("org.slf4j.simpleLogger.log.inject.property",
-				"debug");
+		System.setProperty(LOGGING_LEVEL_PROPERTY, LOGGING_LEVEL_DEBUG);
 		LOG = LoggerFactory.getLogger(ConfigFileReaderIT.class);
 	}
 
@@ -33,7 +35,10 @@ public class ConfigFileReaderIT {
 	public static JavaArchive createDeployment() {
 
 		JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-				.addPackages(true, "inject.property")
+				.addClasses(PropertyProducer.class)
+				.addAsResource("it/inject.property.xml", "/inject.property.xml")
+				.addAsResource("it/wsendpoints.properties", "/wsendpoints.properties")
+				.addAsResource("it/emails.properties", "/emails.properties")
 				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 
 		LOG.debug(jar.toString(true));
@@ -50,7 +55,7 @@ public class ConfigFileReaderIT {
 
 	@Test
 	public void propertyShouldBeInjectedProperly() {
-		
+
 		// Given
 		// When
 		// Then
@@ -60,7 +65,7 @@ public class ConfigFileReaderIT {
 
 	@Test
 	public void propertyShouldBeNull() {
-		
+
 		// Given
 		// When
 		// Then

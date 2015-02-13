@@ -7,10 +7,13 @@ import org.junit.Test;
 
 public class ConfigFileReaderTest {
 
+	private static final String TST_DIR = "test/";
+	private static final String CONFIG_FILE_NAME = TST_DIR
+			+ ConfigFileReader.CONFIG_FILE_NAME;
 	private static final String DUMMY_CONFIG_FILE = "dummy.xml";
-	private static final String INVALID_CONFIG_FILE = "inject.property-invalid.xml";
-	private static final String INCOMPLETE_CONFIG_FILE = "inject.property-incomplete.xml";
-	private static final String INCOMPLETE_CONFIG_FILE2 = "inject.property-incomplete2.xml";
+	private static final String INVALID_CONFIG_FILE = "test/inject.property-invalid.xml";
+	private static final String INCOMPLETE_CONFIG_FILE = "test/inject.property-incomplete.xml";
+	private static final String INCOMPLETE_CONFIG_FILE2 = "test/inject.property-incomplete2.xml";
 	private static final String EMAILS_PROPERTIES_FILE = "emails.properties";
 	private static final String ENPOINTS_PROPERTIES_FILE = "wsendpoints.properties";
 
@@ -23,7 +26,7 @@ public class ConfigFileReaderTest {
 
 		// When
 		List<String> files = ConfigFileReader.getListOfPropertyFiles(cl,
-				ConfigFileReader.CONFIG_FILE_NAME);
+				CONFIG_FILE_NAME);
 
 		// Then
 		Assert.assertEquals(files.size(), 2);
