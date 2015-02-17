@@ -2,12 +2,14 @@ package inject.property.providers;
 
 import java.io.InputStream;
 
+import javax.inject.Inject;
+
 public class ClassPathFileProvider implements FileProvider {
 
+	@Inject
 	private ClassLoader classLoader;
 
-	public ClassPathFileProvider(ClassLoader classLoader) {
-		this.classLoader = classLoader;
+	public ClassPathFileProvider() {
 	}
 
 	@Override

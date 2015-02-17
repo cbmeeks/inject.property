@@ -2,8 +2,10 @@ package inject.property.config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import inject.property.providers.FileProvider;
+import inject.property.readers.ConfigurationReader;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -25,14 +27,17 @@ public class PropertiesServiceTest {
 	@Mock
 	private FileProvider fileProvider;
 
+	@Mock
+	private ConfigurationReader reader;
+
 	@InjectMocks
 	PropertiesService service;
-	
+
 	@Test
 	public void shouldReturnFivePropertiesFromTwoDifferentFiles() {
 
 		// Given
-		
+
 		// Mock file 1
 		String propertiesFile1 = "emails.properties";
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(
@@ -46,12 +51,17 @@ public class PropertiesServiceTest {
 		when(fileProvider.asInputStream(propertiesFile2)).thenReturn(
 				inputStream);
 
-		List<String> propertiesFiles = new ArrayList<>();
+		final List<String> propertiesFiles = new ArrayList<>();
 		propertiesFiles.add(propertiesFile1);
 		propertiesFiles.add(propertiesFile2);
 
+		final ConfigFile configFile = new ConfigFile();
+		configFile.setPropertiesFile(propertiesFiles);
+		when(reader.read(anyString())).thenReturn(configFile);
+
 		// When
-		Properties properties = service.getProperties(propertiesFiles);
+		Properties properties = service
+				.loadPropertiesFromFile("inject.propertie.xml");
 
 		// Then
 		assertNotNull(properties);
@@ -64,26 +74,31 @@ public class PropertiesServiceTest {
 				properties.getProperty("payrolls"));
 		assertEquals("http:\\hr.company.org", properties.getProperty("hr"));
 	}
-	
+
 	@Test
 	public void shouldReturnAnEmptyPropertiesObject() {
 
 		// Given
 		List<String> propertiesFiles = new ArrayList<>();
 
+		final ConfigFile configFile = new ConfigFile();
+		configFile.setPropertiesFile(propertiesFiles);
+		when(reader.read(anyString())).thenReturn(configFile);
+
 		// When
-		Properties properties = service.getProperties(propertiesFiles);
+		Properties properties = service
+				.loadPropertiesFromFile("inject.properties.xml");
 
 		// Then
 		assertNotNull(properties);
 		assertEquals(0, properties.size());
 	}
-	
+
 	@Test
 	public void shouldReturnThreePropertiesFromTwoFilesOneOfThemEmpty() {
 
 		// Given
-		
+
 		// Mock file 1
 		String propertiesFile1 = "emails.properties";
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(
@@ -101,8 +116,13 @@ public class PropertiesServiceTest {
 		propertiesFiles.add(propertiesFile1);
 		propertiesFiles.add(propertiesFile2);
 
+		final ConfigFile configFile = new ConfigFile();
+		configFile.setPropertiesFile(propertiesFiles);
+		when(reader.read(anyString())).thenReturn(configFile);
+
 		// When
-		Properties properties = service.getProperties(propertiesFiles);
+		Properties properties = service
+				.loadPropertiesFromFile("inject.property.xml");
 
 		// Then
 		assertNotNull(properties);
@@ -110,4 +130,6 @@ public class PropertiesServiceTest {
 		assertEquals("admin@company.org", properties.getProperty("admin"));
 		assertEquals("user1@company.org", properties.getProperty("user1"));
 	}
+	
+	// TODO Add tests for loadPropertiesFromAnnotation
 }

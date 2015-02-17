@@ -1,10 +1,13 @@
 package inject.property.config;
 
 import inject.property.providers.FileProvider;
+import inject.property.readers.ConfigurationReader;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
+
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +19,30 @@ public class PropertiesService {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(PropertiesService.class);
 
+	@Inject
 	private FileProvider fileProvider;
+	
+	@Inject
+	private ConfigurationReader reader;
 
-	public PropertiesService(final FileProvider fileProvider) {
-		this.fileProvider = fileProvider;
+	public PropertiesService() {
 	}
 
-	public Properties getProperties(final List<String> propertiesFiles) {
+	public Properties loadPropertiesFromFile(String fileName) {
+
+		final ConfigFile configFile = reader.read(fileName);
+
+		return loadProperties(configFile.getPropertiesFile());
+	}
+
+	public Properties loadPropertiesFromAnnotation(Class<?> annotatedClass) {
+
+		final ConfigFile configFile = reader.read(annotatedClass);
+
+		return loadProperties(configFile.getPropertiesFile());
+	}
+
+	private Properties loadProperties(List<String> propertiesFiles) {
 
 		final Properties properties = new Properties();
 

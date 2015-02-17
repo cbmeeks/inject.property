@@ -8,15 +8,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "propertiesfiles")
 public class ConfigFile {
 
-	@XmlElement(name = "propertiesfile", required = true, nillable = false)
+	@XmlElement(name = "propertyfile", required = true, nillable = false)
 	private List<String> propertiesFile;
 
-	public List<String> getPropertyFiles() {
+	public List<String> getPropertiesFile() {
 		return propertiesFile;
 	}
 
-	public void setPropertyFiles(List<String> propertyFiles) {
-		this.propertiesFile = propertyFiles;
+	public void setPropertiesFile(List<String> propertiesFile) {
+		this.propertiesFile = propertiesFile;
 	}
 
 }

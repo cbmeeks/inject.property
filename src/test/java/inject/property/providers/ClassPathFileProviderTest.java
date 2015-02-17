@@ -9,12 +9,13 @@ import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ClassPathFileProviderTest {
 
 	@Mock
@@ -25,11 +26,6 @@ public class ClassPathFileProviderTest {
 
 	@InjectMocks
 	ClassPathFileProvider provider;
-
-	@Before
-	public void init() {
-		MockitoAnnotations.initMocks(this);
-	}
 
 	@Test
 	public void shouldReturnAnInputStreamBecauseTheFileIsAccessibleFromClassPath() {
