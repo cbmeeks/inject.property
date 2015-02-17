@@ -1,6 +1,7 @@
-# inject.property
+# Properties injection for Java EE application
 
-inject.property is a java ee 6 annotation that can be used to simply inject properties (from .properties files) in String attributes
+This project is a set of two annotations that can be used to easily inject properties in Java EE 6 applications with CDI enabled.
+
 
 Ex.
 `@Property("webservice.endpoint")`

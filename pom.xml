@@ -79,7 +79,7 @@
 		<dependency>
 			<groupId>org.jboss.spec</groupId>
 			<artifactId>jboss-javaee-6.0</artifactId>
-			<version>1.0.0.Final</version>
+			<version>3.0.3.Final</version>
 			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>
@@ -89,6 +89,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -101,7 +107,7 @@
 		<dependency>
 			<groupId>org.jboss.arquillian.container</groupId>
 			<artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-			<version>1.0.0.CR3</version>
+			<version>1.0.0.CR8</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -109,7 +115,7 @@
 		<dependency>
 			<groupId>org.jboss.weld</groupId>
 			<artifactId>weld-core</artifactId>
-			<version>1.1.5.Final</version>
+			<version>1.1.28.Final</version>
 			<scope>test</scope>
 		</dependency>
 

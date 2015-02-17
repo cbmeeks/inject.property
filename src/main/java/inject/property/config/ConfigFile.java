@@ -5,14 +5,18 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "propertyfiles")
+@XmlRootElement(name = "propertiesfiles")
 public class ConfigFile {
 
-	@XmlElement(name = "propertyfile", required = true, nillable = false)
-	private List<String> propertyFiles;
+	@XmlElement(name = "propertiesfile", required = true, nillable = false)
+	private List<String> propertiesFile;
 
 	public List<String> getPropertyFiles() {
-		return propertyFiles;
+		return propertiesFile;
+	}
+
+	public void setPropertyFiles(List<String> propertyFiles) {
+		this.propertiesFile = propertyFiles;
 	}
 
 }
