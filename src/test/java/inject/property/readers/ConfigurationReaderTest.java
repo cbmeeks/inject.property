@@ -5,9 +5,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
-import inject.property.annotations.PropertiesFiles;
-import inject.property.config.ConfigFile;
-import inject.property.providers.FileProvider;
+import inject.property.annotation.PropertiesFiles;
+import inject.property.control.FileProvider;
+import inject.property.entity.Configuration;
 
 import java.io.ByteArrayInputStream;
 
@@ -37,7 +37,7 @@ public class ConfigurationReaderTest {
 				inputStream);
 
 		// When
-		ConfigFile configFile = reader.read("inject.property.xml");
+		Configuration configFile = reader.read("inject.property.xml");
 
 		// Then
 		assertNotNull(configFile);
@@ -56,7 +56,7 @@ public class ConfigurationReaderTest {
 				inputStream);
 
 		// When
-		ConfigFile configFile = reader.read("dummy.xml");
+		Configuration configFile = reader.read("dummy.xml");
 
 		// Then
 		assertNull(configFile);
@@ -73,7 +73,7 @@ public class ConfigurationReaderTest {
 				inputStream);
 
 		// When
-		ConfigFile configFile = reader.read("inject.property.txt");
+		Configuration configFile = reader.read("inject.property.txt");
 
 		// Then
 		assertNull(configFile);
@@ -90,7 +90,7 @@ public class ConfigurationReaderTest {
 				inputStream);
 
 		// When
-		ConfigFile configFile = reader.read("inject.property.xml");
+		Configuration configFile = reader.read("inject.property.xml");
 
 		// Then
 		assertNotNull(configFile);
@@ -108,7 +108,7 @@ public class ConfigurationReaderTest {
 				inputStream);
 
 		// When
-		ConfigFile configFile = reader.read("inject.property.xml");
+		Configuration configFile = reader.read("inject.property.xml");
 
 		// Then
 		assertNotNull(configFile);
@@ -127,7 +127,7 @@ public class ConfigurationReaderTest {
 		}
 
 		// When
-		ConfigFile configFile = reader.read(AnnotatedClass.class);
+		Configuration configFile = reader.read(AnnotatedClass.class);
 
 		// Then
 		assertNotNull(configFile);
@@ -145,7 +145,7 @@ public class ConfigurationReaderTest {
 		}
 
 		// When
-		ConfigFile configFile = reader.read(NonAnnotatedClass.class);
+		Configuration configFile = reader.read(NonAnnotatedClass.class);
 
 		// Then
 		assertNull(configFile);

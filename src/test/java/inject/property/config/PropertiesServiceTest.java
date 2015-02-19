@@ -4,7 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
-import inject.property.providers.FileProvider;
+import inject.property.control.FileProvider;
+import inject.property.entity.Configuration;
 import inject.property.readers.ConfigurationReader;
 
 import java.io.ByteArrayInputStream;
@@ -55,7 +56,7 @@ public class PropertiesServiceTest {
 		propertiesFiles.add(propertiesFile1);
 		propertiesFiles.add(propertiesFile2);
 
-		final ConfigFile configFile = new ConfigFile();
+		final Configuration configFile = new Configuration();
 		configFile.setPropertiesFile(propertiesFiles);
 		when(reader.read(anyString())).thenReturn(configFile);
 
@@ -81,7 +82,7 @@ public class PropertiesServiceTest {
 		// Given
 		List<String> propertiesFiles = new ArrayList<>();
 
-		final ConfigFile configFile = new ConfigFile();
+		final Configuration configFile = new Configuration();
 		configFile.setPropertiesFile(propertiesFiles);
 		when(reader.read(anyString())).thenReturn(configFile);
 
@@ -116,7 +117,7 @@ public class PropertiesServiceTest {
 		propertiesFiles.add(propertiesFile1);
 		propertiesFiles.add(propertiesFile2);
 
-		final ConfigFile configFile = new ConfigFile();
+		final Configuration configFile = new Configuration();
 		configFile.setPropertiesFile(propertiesFiles);
 		when(reader.read(anyString())).thenReturn(configFile);
 

@@ -1,7 +1,7 @@
 package inject.property.config;
 
-import inject.property.annotations.Property;
-import inject.property.producers.PropertyProducer;
+import inject.property.annotation.Property;
+import inject.property.producer.PropertyProducer;
 
 import javax.inject.Inject;
 

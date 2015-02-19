@@ -1,4 +1,4 @@
-package inject.property.annotations;
+package inject.property.annotation;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

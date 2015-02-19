@@ -1,4 +1,4 @@
-package inject.property.providers;
+package inject.property.control;
 
 import java.io.InputStream;
 
