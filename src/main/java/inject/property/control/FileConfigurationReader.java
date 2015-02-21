@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 public class FileConfigurationReader implements ConfigurationReader {
 
 	public static final String DEFAULT_CONFIG_FILE = "inject.property.xml";
-	private static final String ERROR_MSG = "Error reading the configuration from the file";
+	private static final String ERROR_MSG = "Error reading configuration file %s";
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(FileConfigurationReader.class);
@@ -39,7 +39,7 @@ public class FileConfigurationReader implements ConfigurationReader {
 			configuration = (Configuration) unmarshaller.unmarshal(inputStream);
 
 		} catch (JAXBException e) {
-			LOG.error(ERROR_MSG, e);
+			LOG.error(String.format(ERROR_MSG, DEFAULT_CONFIG_FILE), e);
 		}
 
 		return configuration;
