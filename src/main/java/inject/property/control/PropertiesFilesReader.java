@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,19 +17,22 @@ public class PropertiesFilesReader {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(PropertiesFilesReader.class);
 
-	private ConfigurationReader configReader;
+	@Inject
 	private FileProvider fileProvider;
 
-	public PropertiesFilesReader(ConfigurationReader configReader,
-			FileProvider fileProvider) {
+	@Inject
+	private FileConfigurationReader fileConfigReader;
 
-		this.configReader = configReader;
-		this.fileProvider = fileProvider;
+	@Inject
+	private AnnotationConfigurationReader annotationConfigReader;
+
+	public PropertiesFilesReader() {
 	}
 
-	public Properties getProperties() {
+	public Properties getPropertiesFromAnnotation(Class<?> clazz, ClassLoader cl) {
 
-		final Configuration configuration = configReader.getConfiguration();
+		final Configuration configuration = annotationConfigReader
+				.getConfiguration(clazz);
 		final Properties props = new Properties();
 
 		if (configuration == null) {
@@ -36,18 +41,38 @@ public class PropertiesFilesReader {
 
 		Properties tmpProps;
 		for (String fileName : configuration.getFiles()) {
-			tmpProps = loadSingleFile(fileName);
+			tmpProps = loadSingleFile(fileName, cl);
 			copyProperties(tmpProps, props);
 		}
 
 		return props;
 	}
 
-	private Properties loadSingleFile(String fileName) {
+	public Properties getPropertiesFromClassPath(ClassLoader cl) {
+
+		final Configuration configuration = fileConfigReader
+				.getConfiguration(cl);
+		final Properties props = new Properties();
+
+		if (configuration == null) {
+			return props;
+		}
+
+		Properties tmpProps;
+		for (String fileName : configuration.getFiles()) {
+			tmpProps = loadSingleFile(fileName, cl);
+			copyProperties(tmpProps, props);
+		}
+
+		return props;
+	}
+
+	private Properties loadSingleFile(String fileName, ClassLoader cl) {
 
 		final Properties tmpProps = new Properties();
 
-		try (InputStream inStream = fileProvider.asInputStream(fileName)) {
+		try (InputStream inStream = fileProvider.asInputStreamFromClassPath(
+				fileName, cl)) {
 
 			if (inStream == null) {
 				LOG.error(String.format(FILE_NOT_FOUND, fileName));

@@ -3,21 +3,16 @@ package inject.property.control;
 import inject.property.annotation.PropertiesFiles;
 import inject.property.entity.Configuration;
 
-public class AnnotationConfigurationReader implements ConfigurationReader {
+public class AnnotationConfigurationReader {
 
-	private Class<?> annotatedClass;
-
-	public AnnotationConfigurationReader(Class<?> annotatedClass) {
-		this.annotatedClass = annotatedClass;
+	public AnnotationConfigurationReader() {
 	}
 
-	@Override
-	public Configuration getConfiguration() {
+	public Configuration getConfiguration(Class<?> clazz) {
 
-		Configuration configuration = null;
+		Configuration configuration = new Configuration();
 
-		PropertiesFiles annotation = annotatedClass
-				.getAnnotation(PropertiesFiles.class);
+		PropertiesFiles annotation = clazz.getAnnotation(PropertiesFiles.class);
 
 		if (annotation != null) {
 			configuration = new Configuration();

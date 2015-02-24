@@ -13,19 +13,15 @@ import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ClassPathFileProviderTest {
+public class FileProviderTest {
 
 	@Mock
 	private ClassLoader cl;
-
-	@InjectMocks
-	private ClassPathFileProvider provider;
 
 	@Mock
 	private InputStream is;
@@ -39,11 +35,12 @@ public class ClassPathFileProviderTest {
 	public void shouldReturnAnInputStream() {
 
 		// Given
+		FileProvider provider = new FileProvider();
 		when(cl.getResourceAsStream(anyString())).thenReturn(is);
 
 		// When
-		final InputStream returnedStream = provider
-				.asInputStream("input.property.xml");
+		final InputStream returnedStream = provider.asInputStreamFromClassPath(
+				"input.property.xml", cl);
 
 		// Then
 		assertNotNull(returnedStream);
@@ -51,14 +48,14 @@ public class ClassPathFileProviderTest {
 		verify(cl, times(1)).getResourceAsStream(anyString());
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected = NullPointerException.class)
 	public void shouldThrowNullPointerException() {
 
 		// Given
-		provider = new ClassPathFileProvider(null);
+		FileProvider provider = new FileProvider();
 
 		// When
-		provider.asInputStream("inject.property.xml");
+		provider.asInputStreamFromClassPath("inject.property.xml", null);
 
 		// Then
 		fail("Should throw Exception");

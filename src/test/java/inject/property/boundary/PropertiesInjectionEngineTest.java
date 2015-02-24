@@ -6,6 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import inject.property.control.FileProvider;
+import inject.property.control.PropertiesInjectionEngine;
 import inject.property.entity.Configuration;
 
 import java.io.ByteArrayInputStream;
@@ -41,9 +42,9 @@ public class PropertiesInjectionEngineTest {
 		configFile.addFile(EMAILS);
 		configFile.addFile(ENDPOINTS);
 
-		when(fileProvider.asInputStream(EMAILS)).thenReturn(
+		when(fileProvider.asInputStreamFromClassPath(EMAILS)).thenReturn(
 				new ByteArrayInputStream(EMAILS_FILE.getBytes()));
-		when(fileProvider.asInputStream(ENDPOINTS)).thenReturn(
+		when(fileProvider.asInputStreamFromClassPath(ENDPOINTS)).thenReturn(
 				new ByteArrayInputStream(ENDPOINTS_FILE.getBytes()));
 
 		// When
@@ -51,7 +52,7 @@ public class PropertiesInjectionEngineTest {
 
 		// Then
 		assertEquals("Should return properties", 4, props.size());
-		verify(fileProvider, times(2)).asInputStream(anyString());
+		verify(fileProvider, times(2)).asInputStreamFromClassPath(anyString());
 	}
 
 	@Test
@@ -76,7 +77,7 @@ public class PropertiesInjectionEngineTest {
 		final Configuration configFile = new Configuration();
 		configFile.addFile(EMAILS);
 
-		when(fileProvider.asInputStream(EMAILS)).thenReturn(
+		when(fileProvider.asInputStreamFromClassPath(EMAILS)).thenReturn(
 				new ByteArrayInputStream("".getBytes()));
 
 		// When
@@ -84,7 +85,7 @@ public class PropertiesInjectionEngineTest {
 
 		// Then
 		assertEquals("Should not return any property", 0, props.size());
-		verify(fileProvider, times(1)).asInputStream(anyString());
+		verify(fileProvider, times(1)).asInputStreamFromClassPath(anyString());
 	}
 
 }

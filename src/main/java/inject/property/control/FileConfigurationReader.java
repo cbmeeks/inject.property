@@ -4,6 +4,7 @@ import inject.property.entity.Configuration;
 
 import java.io.InputStream;
 
+import javax.inject.Inject;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -11,7 +12,7 @@ import javax.xml.bind.Unmarshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FileConfigurationReader implements ConfigurationReader {
+public class FileConfigurationReader {
 
 	public static final String DEFAULT_CONFIG_FILE = "inject.property.xml";
 	private static final String ERROR_MSG = "Error reading configuration file %s";
@@ -19,19 +20,18 @@ public class FileConfigurationReader implements ConfigurationReader {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(FileConfigurationReader.class);
 
+	@Inject
 	private FileProvider fileProvider;
 
-	public FileConfigurationReader(FileProvider fileProvider) {
-		this.fileProvider = fileProvider;
+	public FileConfigurationReader() {
 	}
 
-	@Override
-	public Configuration getConfiguration() {
+	public Configuration getConfiguration(ClassLoader cl) {
 
 		Configuration configuration = new Configuration();
 
-		InputStream inputStream = fileProvider
-				.asInputStream(DEFAULT_CONFIG_FILE);
+		InputStream inputStream = fileProvider.asInputStreamFromClassPath(
+				DEFAULT_CONFIG_FILE, cl);
 
 		try {
 			JAXBContext ctx = JAXBContext.newInstance(Configuration.class);

@@ -2,6 +2,14 @@ package inject.property.control;
 
 import java.io.InputStream;
 
-public interface FileProvider {
-	InputStream asInputStream(String file);
+public class FileProvider {
+
+	public FileProvider() {
+	}
+
+	public InputStream asInputStreamFromClassPath(String file,
+			ClassLoader classLoader) {
+		return classLoader.getResourceAsStream(file);
+	}
+
 }
