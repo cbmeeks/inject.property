@@ -1,7 +1,7 @@
 package inject.property.control;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,118 +23,149 @@ public class PropertiesFilesReaderTest {
 	private static final String ENDPOINTS = "endpoints.properties";
 
 	@Mock
-	private ConfigurationReader configReader;
+	private FileProvider fileProvider;
 
 	@Mock
-	private FileProvider provider;
+	private FileConfigurationReader fileConfigReader;
+
+	@Mock
+	private AnnotationConfigurationReader annotationConfigReader;
 
 	@InjectMocks
 	private PropertiesFilesReader propsReader;
+
+	@Mock
+	private ClassLoader cl;
 
 	@Test
 	public void shouldReturnFourPropertiesFromTwoFiles() {
 
 		// Given
-		final Configuration config = new Configuration();
-		config.addFile(EMAILS);
-		config.addFile(ENDPOINTS);
-		when(configReader.getConfiguration()).thenReturn(config);
+		final Configuration configuration = new Configuration();
+		configuration.addFiles(new String[] { EMAILS, ENDPOINTS });
+		when(fileConfigReader.getConfiguration(any(ClassLoader.class)))
+				.thenReturn(configuration);
 
-		String emails = "admin=admin@company.com\nuser1=user1@company.com";
-		when(provider.asInputStreamFromClassPath(EMAILS)).thenReturn(
+		final String emails = "admin=admin@company.com\nuser1=user1@company.com";
+		when(
+				fileProvider.asInputStreamFromClassPath(eq(EMAILS),
+						any(ClassLoader.class))).thenReturn(
 				new ByteArrayInputStream(emails.getBytes()));
 
-		String endpoints = "billing=billig.company.com\nivr=ivr.company.com";
-		when(provider.asInputStreamFromClassPath(ENDPOINTS)).thenReturn(
+		final String endpoints = "billing=billig.company.com\nivr=ivr.company.com";
+		when(
+				fileProvider.asInputStreamFromClassPath(eq(ENDPOINTS),
+						any(ClassLoader.class))).thenReturn(
 				new ByteArrayInputStream(endpoints.getBytes()));
 
 		// When
-		Properties props = propsReader.getProperties();
+		Properties props = propsReader.getPropertiesFromClassPath(cl);
 
 		// Then
 		assertEquals(4, props.size());
-		verify(provider, times(2)).asInputStreamFromClassPath(anyString());
+		verify(fileConfigReader, times(1)).getConfiguration(
+				any(ClassLoader.class));
+		verify(fileProvider, times(2)).asInputStreamFromClassPath(anyString(),
+				any(ClassLoader.class));
 	}
 
 	@Test
 	public void shouldReturnTwoPropertiesFromTwoFilesOneOfThemIsEmpty() {
 
 		// Given
-		final Configuration config = new Configuration();
-		config.addFile(EMAILS);
-		config.addFile(ENDPOINTS);
-		when(configReader.getConfiguration()).thenReturn(config);
+		final Configuration configuration = new Configuration();
+		configuration.addFiles(new String[] { EMAILS, ENDPOINTS });
+		when(fileConfigReader.getConfiguration(any(ClassLoader.class)))
+				.thenReturn(configuration);
 
-		String emails = "admin=admin@company.com\nuser1=user1@company.com";
-		when(provider.asInputStreamFromClassPath(EMAILS)).thenReturn(
+		final String emails = "admin=admin@company.com\nuser1=user1@company.com";
+		when(
+				fileProvider.asInputStreamFromClassPath(eq(EMAILS),
+						any(ClassLoader.class))).thenReturn(
 				new ByteArrayInputStream(emails.getBytes()));
 
-		String endpoints = "";
-		when(provider.asInputStreamFromClassPath(ENDPOINTS)).thenReturn(
+		final String endpoints = "";
+		when(
+				fileProvider.asInputStreamFromClassPath(eq(ENDPOINTS),
+						any(ClassLoader.class))).thenReturn(
 				new ByteArrayInputStream(endpoints.getBytes()));
 
 		// When
-		Properties props = propsReader.getProperties();
+		Properties props = propsReader.getPropertiesFromClassPath(cl);
 
 		// Then
 		assertEquals(2, props.size());
-		verify(provider, times(2)).asInputStreamFromClassPath(anyString());
+		verify(fileConfigReader, times(1)).getConfiguration(
+				any(ClassLoader.class));
+		verify(fileProvider, times(2)).asInputStreamFromClassPath(anyString(),
+				any(ClassLoader.class));
 	}
 
 	@Test
 	public void shouldReturnNoPropertiesBecauseFilesDontExist() {
 
 		// Given
-		final Configuration config = new Configuration();
-		config.addFile(EMAILS);
-		config.addFile(ENDPOINTS);
-		when(configReader.getConfiguration()).thenReturn(config);
+		final Configuration configuration = new Configuration();
+		configuration.addFiles(new String[] { EMAILS, ENDPOINTS });
+		when(fileConfigReader.getConfiguration(any(ClassLoader.class)))
+				.thenReturn(configuration);
 
-		when(provider.asInputStreamFromClassPath(EMAILS)).thenReturn(null);
-		when(provider.asInputStreamFromClassPath(ENDPOINTS)).thenReturn(null);
+		when(
+				fileProvider.asInputStreamFromClassPath(eq(EMAILS),
+						any(ClassLoader.class))).thenReturn(null);
+		when(
+				fileProvider.asInputStreamFromClassPath(eq(ENDPOINTS),
+						any(ClassLoader.class))).thenReturn(null);
 
 		// When
-		Properties props = propsReader.getProperties();
+		Properties props = propsReader.getPropertiesFromClassPath(cl);
 
 		// Then
 		assertEquals(0, props.size());
-		verify(provider, times(2)).asInputStreamFromClassPath(anyString());
+		verify(fileProvider, times(2)).asInputStreamFromClassPath(anyString(),
+				any(ClassLoader.class));
 	}
 
 	@Test
 	public void shouldReturnThreeProperties() {
 
 		// Given
-		final Configuration config = new Configuration();
-		config.addFile(EMAILS);
-		config.addFile(ENDPOINTS);
-		when(configReader.getConfiguration()).thenReturn(config);
+		final Configuration configuration = new Configuration();
+		configuration.addFiles(new String[] { EMAILS, ENDPOINTS });
+		when(fileConfigReader.getConfiguration(any(ClassLoader.class)))
+				.thenReturn(configuration);
 
-		String emails = "admin=admin@company.com\nuser1=user1@company.com";
-		when(provider.asInputStreamFromClassPath(EMAILS)).thenReturn(
+		final String emails = "admin=admin@company.com\nuser1=user1@company.com";
+		when(
+				fileProvider.asInputStreamFromClassPath(eq(EMAILS),
+						any(ClassLoader.class))).thenReturn(
 				new ByteArrayInputStream(emails.getBytes()));
 
-		String endpoints = "some dummy text";
-		when(provider.asInputStreamFromClassPath(ENDPOINTS)).thenReturn(
+		final String endpoints = "some dummy text";
+		when(
+				fileProvider.asInputStreamFromClassPath(eq(ENDPOINTS),
+						any(ClassLoader.class))).thenReturn(
 				new ByteArrayInputStream(endpoints.getBytes()));
 
 		// When
-		Properties props = propsReader.getProperties();
+		Properties props = propsReader.getPropertiesFromClassPath(cl);
 
 		// Then
 		assertEquals(3, props.size());
-		verify(provider, times(2)).asInputStreamFromClassPath(anyString());
+		verify(fileProvider, times(2)).asInputStreamFromClassPath(anyString(),
+				any(ClassLoader.class));
 	}
 
 	@Test
 	public void shouldReturnNoPropertiesBecauseNoFilesProvided() {
 
 		// Given
-		final Configuration config = new Configuration();
-		when(configReader.getConfiguration()).thenReturn(config);
+		final Configuration configuration = new Configuration();
+		when(fileConfigReader.getConfiguration(any(ClassLoader.class)))
+				.thenReturn(configuration);
 
 		// When
-		Properties props = propsReader.getProperties();
+		Properties props = propsReader.getPropertiesFromClassPath(cl);
 
 		// Then
 		assertEquals(0, props.size());
