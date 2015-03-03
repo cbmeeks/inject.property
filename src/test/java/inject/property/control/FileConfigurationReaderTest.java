@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -24,6 +25,9 @@ public class FileConfigurationReaderTest {
 	@Mock
 	private FileProvider provider;
 
+	@InjectMocks
+	private FileConfigurationReader reader;
+
 	@Test
 	public void shouldReturnTwoFilesInTheList() {
 
@@ -31,7 +35,6 @@ public class FileConfigurationReaderTest {
 		final String configFile = "<propertiesfiles><file>wsendpoints.properties</file><file>emails.properties</file></propertiesfiles>";
 		final ByteArrayInputStream is = new ByteArrayInputStream(
 				configFile.getBytes());
-		FileConfigurationReader reader = new FileConfigurationReader();
 		when(
 				provider.asInputStreamFromClassPath(anyString(),
 						any(ClassLoader.class))).thenReturn(is);
@@ -54,7 +57,6 @@ public class FileConfigurationReaderTest {
 		final String configFile = "<dummytag><file>wsendpoints.properties</file><file>emails.properties</file></dummytag>";
 		final ByteArrayInputStream is = new ByteArrayInputStream(
 				configFile.getBytes());
-		FileConfigurationReader reader = new FileConfigurationReader();
 		when(
 				provider.asInputStreamFromClassPath(anyString(),
 						any(ClassLoader.class))).thenReturn(is);
@@ -77,7 +79,6 @@ public class FileConfigurationReaderTest {
 		final String configFile = "Some dummy text file";
 		final ByteArrayInputStream is = new ByteArrayInputStream(
 				configFile.getBytes());
-		FileConfigurationReader reader = new FileConfigurationReader();
 		when(
 				provider.asInputStreamFromClassPath(anyString(),
 						any(ClassLoader.class))).thenReturn(is);
