@@ -13,7 +13,7 @@ import javax.inject.Qualifier;
 import javax.enterprise.util.Nonbinding;
 
 @Retention(RUNTIME)
-@Target({ TYPE, METHOD, FIELD, PARAMETER })
+@Target({ TYPE })
 @Qualifier
 public @interface PropertiesFiles {
 

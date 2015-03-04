@@ -18,26 +18,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RunWith(Arquillian.class)
-public class ConfigurationFileIT {
+public class ConfigurationFileFieldInjectionIT {
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(AnnotatedClassInjectionIT.class);
 
-	@Inject
-	@Property("admin")
 	private String adminEmail;
 
 	@Inject
-	@Property("billing.endpoint")
+	public void setAdminEmail(@Property("admin") String adminEmail) {
+		this.adminEmail = adminEmail;
+	}
+
 	private String billingEP;
 
 	@Inject
-	@Property("jdoe")
+	public void setBillingEP(@Property("billing.endpoint") String billingEP) {
+		this.billingEP = billingEP;
+	}
+
 	private String jdoeEmail;
 
 	@Inject
-	@Property
-	private String dummyEmail;
+	public void setJdoeEmail(@Property("jdoe") String jdoeEmail) {
+		this.jdoeEmail = jdoeEmail;
+	}
 
 	@Deployment
 	public static JavaArchive createDeployment() {
@@ -73,12 +78,4 @@ public class ConfigurationFileIT {
 		assertNull(jdoeEmail);
 	}
 
-	@Test
-	public void shouldNotInjectDummyEmailBecauseNoPropertySpecifiedInTheAnnotation() {
-
-		// Given
-		// When
-		// Then
-		assertNull(dummyEmail);
-	}
 }

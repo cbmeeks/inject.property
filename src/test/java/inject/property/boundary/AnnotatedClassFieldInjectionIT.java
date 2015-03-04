@@ -2,7 +2,7 @@ package inject.property.boundary;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import inject.property.annotation.PropertiesFiles;
 import inject.property.annotation.Property;
 
 import javax.inject.Inject;
@@ -18,26 +18,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RunWith(Arquillian.class)
-public class ConfigurationFileIT {
+@PropertiesFiles({ "emails.properties" })
+public class AnnotatedClassFieldInjectionIT {
 
 	private static final Logger LOG = LoggerFactory
-			.getLogger(AnnotatedClassInjectionIT.class);
+			.getLogger(AnnotatedClassFieldInjectionIT.class);
 
-	@Inject
-	@Property("admin")
 	private String adminEmail;
 
 	@Inject
-	@Property("billing.endpoint")
-	private String billingEP;
-
-	@Inject
-	@Property("jdoe")
-	private String jdoeEmail;
-
-	@Inject
-	@Property
-	private String dummyEmail;
+	public void setAdminEmail(@Property("admin") String adminEmail) {
+		this.adminEmail = adminEmail;
+	}
 
 	@Deployment
 	public static JavaArchive createDeployment() {
@@ -53,32 +45,13 @@ public class ConfigurationFileIT {
 	}
 
 	@Test
-	public void shouldInjectAdminEmailAndBillingEndPointBecauseInPropertiesFiles() {
+	public void shouldInjectAdminEmailBecauseInPropertiesFile() {
 
 		// Given
 		// When
 		// Then
 		assertNotNull(adminEmail);
 		assertEquals("admin@company.com", adminEmail);
-		assertNotNull(billingEP);
-		assertEquals("http://localhost:8080/billing", billingEP);
 	}
 
-	@Test
-	public void shouldNotInjectJohnDoeEmailBecauseNotInPropertiesFiles() {
-
-		// Given
-		// When
-		// Then
-		assertNull(jdoeEmail);
-	}
-
-	@Test
-	public void shouldNotInjectDummyEmailBecauseNoPropertySpecifiedInTheAnnotation() {
-
-		// Given
-		// When
-		// Then
-		assertNull(dummyEmail);
-	}
 }
