@@ -1,25 +1,71 @@
-# Properties injection for Java EE application
+# Properties injection for Java EE 6 applications
 
-This project is a set of two annotations that can be used to easily inject properties in Java EE 6 applications with CDI enabled.
+A set of 2 annotations that allow to simply inject properties from properties files.
 
+## Features:
+* Inject a property by simply annotating a String attribute
+* Annotate a class to specify the properties files to load
+* Alternatively, properties files can be listed in a configuration file
+* Supports field injection and method injection
+* Uses CDI to perform the injection
 
-Ex.
-`@Property("webservice.endpoint")`
-`private String wsEndpint;`
+## Technologies
+* Java EE 6 with CDI 1.0 enabled
 
-IMPORTANT
-CDI injection must be enabled (beans.xml file in META-INF or WEB-INF)
+## To build the jar
+mvn clean compile package
 
-## Building
-`mvn clean install`
+## To run integration tests
+mvn verify
+
+## To build the jar and run integration tests
+mvn clean install
 
 ## Usage
-1. Add the generated jar to your project dependencies
-2. Create a file named inject.property.xml in src/main/resource or any othe directory available to the classpath
-3. The file will list all the propety files used by the application and must have the following structure
-  <propertyfiles>
-	  <propertyfile>file1.properties</propertyfile>
-	  <propertyfile>file2.properties</propertyfile>
-  </propertyfiles>
-  file1.properties and file2.properties are located in src/main/resource or any other directory available to the classpath, note that only names are specified not the paths
-4. In the java code create String attributes and annotate them with @Property("key") where key is the key of the property in one of the properties files. The value of the propery will be injected in attribute.
+* Build the jar and drop it with the dependencies
+* Annotate the class where the injection will be performed with the @PropertiesFiles annotation, this annotation will list all the properties files that will be loaded
+
+@PropertiesFiles({"file1.properties", "file2.properties"})
+public MyClass {
+    ....
+}
+
+* alternatively you can list the files in a configuration file named inject.property.xml, this file must be available in the classpath
+
+<propertiesfiles>
+	<file>file1.properties</file>
+	<file>file2.properties</file>
+	....
+	<file>fileN.properties</file>
+</propertiesfiles>
+
+* Annotate a String attribute (the type string is mandatory as of current version) that will receive the value of the property with the annotations @Inject and @Property("${property.key}") where ${property.key} is the key of the property in the properties file
+
+@PropertiesFiles({"emails.properties"})
+public MyClass {
+
+    @Inject
+    @Property("admin.email")
+    private String adminEmail;
+    ....
+}
+
+* Method injection can also be used
+
+@PropertiesFiles({"emails.properties"})
+public MyClass {
+
+    private String adminEmail;
+
+    @Inject
+    public void setAdminEmail(@Property("admin.email") String adminEmail) {
+        this.adminEmail = adminEmail;
+    }
+    ....
+}
+
+### How it works
+* The files listed in the annotation @PropertiesFiles are loaded and used for the injection, the files listed in the configuration file inject.property.xml are ignored
+* If @PropertiesFiles is not present then inject.property.xml is used
+
+
