@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>inject.property</groupId>
+	<groupId>com.github.djallalserradji</groupId>
 	<artifactId>inject.property</artifactId>
 	<version>0.5.0-SNAPSHOT</version>
 
@@ -10,6 +10,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
+
+	<scm>
+		<url>git@github.com:djallalserradji/inject.property.git</url>
+		<connection>scm:git:git@github.com:djallalserradji/inject.property.git</connection>
+		<developerConnection>git@github.com:djallalserradji/inject.property.git</developerConnection>
+	</scm>
 
 	<build>
 		<plugins>
@@ -31,7 +37,7 @@
 				<version>2.18.1</version>
 			</plugin>
 
-			<!-- Integration testing -->
+			<!-- Integration testing plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
@@ -131,8 +137,7 @@
 
 	<profiles>
 
-		<!-- This profile is used to release the project and upload it to the OSSRH 
-			repository -->
+		<!-- This profile is used to release to the OSSRH repository -->
 		<profile>
 
 			<id>release</id>
@@ -182,7 +187,7 @@
 						</executions>
 					</plugin>
 
-					<!-- Sign the artifact prior to upload to public OSSRH repository -->
+					<!-- Sign the artifact before it's uploaded to the OSSRH repository -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
