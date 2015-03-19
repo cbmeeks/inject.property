@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.djallalserradji</groupId>
 	<artifactId>inject.property</artifactId>
-	<version>0.5.1-SNAPSHOT</version>
+	<version>0.5.1</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -12,7 +12,7 @@
 
 	<scm>
 		<connection>scm:git:https://github.com/djallalserradji/inject.property.git</connection>
-	    <tag>HEAD</tag>
+	    <tag>inject.property-0.5.1</tag>
   </scm>
 
 	<build>
