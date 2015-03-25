@@ -1,4 +1,4 @@
-# Properties injection for Java EE 6 applications
+# Injecting external properties into Java EE 6/7 applications
 
 A set of 2 annotations that allow to simply inject properties from properties files.
 
